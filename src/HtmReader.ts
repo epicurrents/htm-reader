@@ -27,15 +27,15 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
         const fileTypeAssocs = [
             {
                 accept: {
-                    "text/html": ['.htm', '.html'],
-                },
-                description: "HyperText Markup Language (HTML)",
-            },
-            {
-                accept: {
                     "text/markdown": ['.md', '.markdown'],
                 },
                 description: "Markdown",
+            },
+            {
+                accept: {
+                    "text/html": ['.htm', '.html'],
+                },
+                description: "HyperText Markup Language (HTML)",
             },
         ] as AssociatedFileType[]
         super(SCOPE, [], fileTypeAssocs)
@@ -47,7 +47,7 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
             const workerOverride = this._workerOverride.get('markdown')
             const worker = workerOverride ? workerOverride() : new Worker(
                 /* webpackChunkName: 'markdown.worker' */
-                new URL('../workers/markdown.worker', import.meta.url),
+                new URL('./workers/markdown.worker', import.meta.url),
                 { type: 'module' }
             )
             Log.registerWorker(worker)

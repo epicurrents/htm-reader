@@ -11,7 +11,7 @@ import HtmReader from '../src/HtmReader'
 
 describe('Epicurrents HTM file reader tests', () => {
     test('Create and instance of file loader', () => {
-        const loader = new HtmReader()
+        const loader = new HtmReader('')
         expect(loader).toBeDefined()
     })
 })

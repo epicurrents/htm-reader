@@ -12,9 +12,9 @@ import { type HtmSourceFileContext } from '#types'
 import MarkdownProcesser from './MarkdownProcesser'
 import { Log } from 'scoped-ts-log'
 
-const SCOPE = 'HtmWorkerSubstitute'
+const SCOPE = 'MarkdownWorkerSubstitute'
 
-export default class HtmWorkerSubstitute extends ServiceWorkerSubstitute {
+export default class MarkdownWorkerSubstitute extends ServiceWorkerSubstitute {
     protected _reader: MarkdownProcesser
     constructor () {
         super()
@@ -37,9 +37,9 @@ export default class HtmWorkerSubstitute extends ServiceWorkerSubstitute {
         Log.debug(`Received message with action ${action}.`, SCOPE)
         if (action === 'get-page-content') {
             const data = validateCommissionProps(
-                message as WorkerMessage['data'] & { page: number },
+                message as WorkerMessage['data'] & { pageNum: number },
                 {
-                    page: ['Number', 'undefined'],
+                    pageNum: ['Number', 'undefined'],
                 }
             )
             if (!data) {
@@ -52,7 +52,13 @@ export default class HtmWorkerSubstitute extends ServiceWorkerSubstitute {
                 return
             }
             try {
-                this._reader.getPageContent(data.page)
+                const content = await this._reader.getPageContent(data.pageNum)
+                this.returnMessage({
+                    action: action,
+                    content: content,
+                    success: true,
+                    rn: message.rn,
+                })
             } catch (e) {
                 Log.error(`An error occurred while trying to get page content.`, SCOPE, e as Error)
                 this.returnMessage({
@@ -65,7 +71,7 @@ export default class HtmWorkerSubstitute extends ServiceWorkerSubstitute {
             const data = validateCommissionProps(
                 message as WorkerMessage['data'] & { sources: HtmSourceFileContext | HtmSourceFileContext[] },
                 {
-                    sources: ['Array', 'Object'],
+                    sources: 'Array',
                 }
             )
             if (!data) {

@@ -5,10 +5,10 @@
  * @license    Apache-2.0
  */
 
-import { DocumentFormat, FileFormatReader } from '@epicurrents/core/dist/types'
+import { FileFormatReader } from '@epicurrents/core/dist/types'
 
 export type ConfigReadFile = {
-    format?: HtmDocumentFormat
+    format?: string
     mime?: string
     name?: string
     url?: string
@@ -18,7 +18,7 @@ export interface DocumentFileReader extends FileFormatReader {
 
 }
 
-export type HtmDocumentFormat = Exclude<DocumentFormat, "pdf">
+export type HtmDocumentFormat = "html" | "markdown"
 
 export type HtmSourceFileContext = {
     file: File | null

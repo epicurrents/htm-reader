@@ -35,7 +35,9 @@ module.exports = {
         extensions: ['.ts', '.js', '.json'],
         alias: {
             '#root': path.resolve(__dirname, './'),
+            '#markdown': path.resolve(__dirname, 'src', 'markdown'),
             '#types': path.resolve(__dirname, 'src', 'types'),
+            '#workers': path.resolve(__dirname, 'src', 'workers'),
         },
         symlinks: false
     },
