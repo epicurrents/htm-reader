@@ -74,7 +74,7 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
             partial: false,
             range: [],
             role: 'data',
-            type: HtmReader.SCOPES.DOCUMENT,
+            type: HtmReader.CONTEXTS.DOCUMENT,
             url: config?.url || URL.createObjectURL(file),
         } as StudyContextFile
         this._study.files.push(studyFile)
@@ -98,7 +98,7 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
             partial: false,
             range: [],
             role: 'data',
-            type: HtmReader.SCOPES.DOCUMENT,
+            type: HtmReader.CONTEXTS.DOCUMENT,
             url: url,
         } as StudyContextFile
         this._study.files.push(studyFile)
