@@ -16,7 +16,7 @@ import {
     type DocumentFileReader,
     type HtmDocumentFormat,
 } from '#types'
-import Log from 'scoped-ts-log'
+import Log from 'scoped-event-log'
 
 const SCOPE = 'HtmReader'
 

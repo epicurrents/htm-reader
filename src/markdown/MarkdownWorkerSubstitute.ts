@@ -10,7 +10,7 @@ import { validateCommissionProps } from '@epicurrents/core/dist/util'
 import { type WorkerMessage } from '@epicurrents/core/dist/types'
 import { type HtmSourceFileContext } from '#types'
 import MarkdownProcesser from './MarkdownProcesser'
-import { Log } from 'scoped-ts-log'
+import { Log } from 'scoped-event-log'
 
 const SCOPE = 'MarkdownWorkerSubstitute'
 

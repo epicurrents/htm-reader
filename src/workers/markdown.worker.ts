@@ -11,7 +11,7 @@ import { type WorkerMessage } from '@epicurrents/core/dist/types'
 import { validateCommissionProps } from '@epicurrents/core/dist/util'
 import { type HtmSourceFileContext } from '#types'
 import MarkdownProcesser from '../markdown/MarkdownProcesser'
-import { Log } from 'scoped-ts-log'
+import { Log } from 'scoped-event-log'
 
 const SCOPE = "markdown.worker"
 
