@@ -33,7 +33,7 @@ onmessage = async (message: WorkerMessage) => {
         if (!data) {
             Log.error(`Validating props for task '${action}' failed.`, SCOPE)
             postMessage({
-                action: action,
+                action,
                 success: false,
                 rn: message.data.rn,
             })
@@ -56,7 +56,7 @@ onmessage = async (message: WorkerMessage) => {
         if (!data) {
             Log.error(`Validating props for task '${action}' failed.`, SCOPE)
             postMessage({
-                action: action,
+                action,
                 success: false,
                 rn: message.data.rn,
             })
@@ -64,10 +64,16 @@ onmessage = async (message: WorkerMessage) => {
         }
         try {
             setSources(data.sources)
+            postMessage({
+                action,
+                numPages: Array.isArray(data.sources) ? data.sources.length : 1,
+                success: true,
+                rn: message.data.rn,
+            })
         } catch (e) {
             Log.error(`An error occurred while trying to set sources.`, SCOPE, e as Error)
             postMessage({
-                action: action,
+                action,
                 success: false,
                 rn: message.data.rn,
             })

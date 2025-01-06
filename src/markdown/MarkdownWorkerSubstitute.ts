@@ -44,8 +44,8 @@ export default class MarkdownWorkerSubstitute extends ServiceWorkerSubstitute {
             )
             if (!data) {
                 Log.error(`Validating props for task '${action}' failed.`, SCOPE)
-                postMessage({
-                    action: action,
+                this.returnMessage({
+                    action,
                     success: false,
                     rn: message.rn,
                 })
@@ -54,15 +54,15 @@ export default class MarkdownWorkerSubstitute extends ServiceWorkerSubstitute {
             try {
                 const content = await this._reader.getPageContent(data.pageNum)
                 this.returnMessage({
-                    action: action,
-                    content: content,
+                    action,
+                    content,
                     success: true,
                     rn: message.rn,
                 })
             } catch (e) {
                 Log.error(`An error occurred while trying to get page content.`, SCOPE, e as Error)
                 this.returnMessage({
-                    action: action,
+                    action,
                     success: false,
                     rn: message.rn,
                 })
@@ -76,8 +76,8 @@ export default class MarkdownWorkerSubstitute extends ServiceWorkerSubstitute {
             )
             if (!data) {
                 Log.error(`Validating props for task '${action}' failed.`, SCOPE)
-                postMessage({
-                    action: action,
+                this.returnMessage({
+                    action,
                     success: false,
                     rn: message.rn,
                 })
@@ -85,10 +85,16 @@ export default class MarkdownWorkerSubstitute extends ServiceWorkerSubstitute {
             }
             try {
                 this._reader.setSources(data.sources)
+                this.returnMessage({
+                    action,
+                    numPages: Array.isArray(data.sources) ? data.sources.length : 1,
+                    success: true,
+                    rn: data.rn,
+                })
             } catch (e) {
                 Log.error(`An error occurred while trying to set sources.`, SCOPE, e as Error)
                 this.returnMessage({
-                    action: action,
+                    action,
                     success: false,
                     rn: message.rn,
                 })
