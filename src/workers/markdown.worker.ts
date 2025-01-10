@@ -40,17 +40,21 @@ onmessage = async (message: WorkerMessage) => {
             return
         }
         try {
-            getPageContent(data.page)
+            const content = await getPageContent(data.page)
+            postMessage({
+                action,
+                content,
+                success: true,
+                rn: message.data.rn,
+            })
         } catch (e) {
-            Log.error(
-                `An error occurred while trying to cache signals, operation was aborted.`,
-            SCOPE, e as Error)
+            Log.error(`An error occurred while trying to parse markdown.`, SCOPE, e as Error)
         }
     } else if (action === 'set-sources') {
         const data = validateCommissionProps(
             message.data as WorkerMessage['data'] & { sources: HtmSourceFileContext | HtmSourceFileContext[] },
             {
-                sources: ['Array', 'Object'],
+                sources: 'Array',
             }
         )
         if (!data) {
