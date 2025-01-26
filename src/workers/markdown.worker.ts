@@ -11,7 +11,7 @@ import { type WorkerMessage } from '@epicurrents/core/dist/types'
 import { validateCommissionProps } from '@epicurrents/core/dist/util'
 import { type HtmSourceFileContext } from '#types'
 import MarkdownProcesser from '../markdown/MarkdownProcesser'
-import { Log } from 'scoped-ts-log'
+import { Log } from 'scoped-event-log'
 
 const SCOPE = "markdown.worker"
 
@@ -33,30 +33,34 @@ onmessage = async (message: WorkerMessage) => {
         if (!data) {
             Log.error(`Validating props for task '${action}' failed.`, SCOPE)
             postMessage({
-                action: action,
+                action,
                 success: false,
                 rn: message.data.rn,
             })
             return
         }
         try {
-            getPageContent(data.page)
+            const content = await getPageContent(data.page)
+            postMessage({
+                action,
+                content,
+                success: true,
+                rn: message.data.rn,
+            })
         } catch (e) {
-            Log.error(
-                `An error occurred while trying to cache signals, operation was aborted.`,
-            SCOPE, e as Error)
+            Log.error(`An error occurred while trying to parse markdown.`, SCOPE, e as Error)
         }
     } else if (action === 'set-sources') {
         const data = validateCommissionProps(
             message.data as WorkerMessage['data'] & { sources: HtmSourceFileContext | HtmSourceFileContext[] },
             {
-                sources: ['Array', 'Object'],
+                sources: 'Array',
             }
         )
         if (!data) {
             Log.error(`Validating props for task '${action}' failed.`, SCOPE)
             postMessage({
-                action: action,
+                action,
                 success: false,
                 rn: message.data.rn,
             })
@@ -64,10 +68,16 @@ onmessage = async (message: WorkerMessage) => {
         }
         try {
             setSources(data.sources)
+            postMessage({
+                action,
+                numPages: Array.isArray(data.sources) ? data.sources.length : 1,
+                success: true,
+                rn: message.data.rn,
+            })
         } catch (e) {
             Log.error(`An error occurred while trying to set sources.`, SCOPE, e as Error)
             postMessage({
-                action: action,
+                action,
                 success: false,
                 rn: message.data.rn,
             })

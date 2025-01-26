@@ -16,7 +16,7 @@ import {
     type DocumentFileReader,
     type HtmDocumentFormat,
 } from '#types'
-import Log from 'scoped-ts-log'
+import Log from 'scoped-event-log'
 
 const SCOPE = 'HtmReader'
 
@@ -74,7 +74,7 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
             partial: false,
             range: [],
             role: 'data',
-            type: HtmReader.SCOPES.DOCUMENT,
+            modality: 'htm',
             url: config?.url || URL.createObjectURL(file),
         } as StudyContextFile
         this._study.files.push(studyFile)
@@ -98,7 +98,7 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
             partial: false,
             range: [],
             role: 'data',
-            type: HtmReader.SCOPES.DOCUMENT,
+            modality: 'htm',
             url: url,
         } as StudyContextFile
         this._study.files.push(studyFile)

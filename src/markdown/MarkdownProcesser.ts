@@ -10,7 +10,7 @@ import {
 } from '@epicurrents/core/dist/types'
 import { type HtmSourceFileContext } from '#types'
 import markdownit from 'markdown-it'
-import { Log } from 'scoped-ts-log'
+import { Log } from 'scoped-event-log'
 
 const SCOPE = 'MarkdownProcesser'
 
