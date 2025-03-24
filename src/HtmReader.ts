@@ -44,7 +44,7 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
 
     getFileTypeWorker (): Worker | null {
         if (this._format === 'markdown') {
-            const workerOverride = this._workerOverride.get('markdown')
+            const workerOverride = this._workerOverrides.get('markdown')
             const worker = workerOverride ? workerOverride() : new Worker(
                 /* webpackChunkName: 'markdown.worker' */
                 new URL('./workers/markdown.worker', import.meta.url),
