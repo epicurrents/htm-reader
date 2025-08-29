@@ -7,21 +7,21 @@
 
 import { ServiceWorkerSubstitute } from '@epicurrents/core'
 import { validateCommissionProps } from '@epicurrents/core/dist/util'
-import { type WorkerMessage } from '@epicurrents/core/dist/types'
+import type { WorkerMessage, WorkerSubstitute } from '@epicurrents/core/dist/types'
 import { type HtmSourceFileContext } from '#types'
-import MarkdownProcesser from './MarkdownProcesser'
+import MarkdownProcessor from './MarkdownProcessor'
 import { Log } from 'scoped-event-log'
 
 const SCOPE = 'MarkdownWorkerSubstitute'
 
-export default class MarkdownWorkerSubstitute extends ServiceWorkerSubstitute {
-    protected _reader: MarkdownProcesser
+export default class MarkdownWorkerSubstitute extends ServiceWorkerSubstitute implements WorkerSubstitute {
+    protected _reader: MarkdownProcessor
     constructor () {
         super()
         if (!window.__EPICURRENTS__?.RUNTIME) {
             Log.error(`Reference to main application was not found!`, SCOPE)
         }
-        this._reader = new MarkdownProcesser(window.__EPICURRENTS__.RUNTIME.SETTINGS)
+        this._reader = new MarkdownProcessor(window.__EPICURRENTS__.RUNTIME.SETTINGS)
         //const updateCallback = (update: { [prop: string]: unknown }) => {
         //    if (update.action === 'cache-signals') {
         //        this.returnMessage(update as WorkerMessage['data'])
@@ -39,7 +39,7 @@ export default class MarkdownWorkerSubstitute extends ServiceWorkerSubstitute {
             const data = validateCommissionProps(
                 message as WorkerMessage['data'] & { pageNum: number },
                 {
-                    pageNum: ['Number', 'undefined'],
+                    pageNum: 'Number?',
                 }
             )
             if (!data) {

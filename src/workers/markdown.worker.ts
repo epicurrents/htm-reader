@@ -10,12 +10,12 @@ import { SETTINGS } from '@epicurrents/core'
 import { type WorkerMessage } from '@epicurrents/core/dist/types'
 import { validateCommissionProps } from '@epicurrents/core/dist/util'
 import { type HtmSourceFileContext } from '#types'
-import MarkdownProcesser from '../markdown/MarkdownProcesser'
+import MarkdownProcessor from '../markdown/MarkdownProcessor'
 import { Log } from 'scoped-event-log'
 
 const SCOPE = "markdown.worker"
 
-const LOADER = new MarkdownProcesser(SETTINGS)
+const LOADER = new MarkdownProcessor(SETTINGS)
 
 onmessage = async (message: WorkerMessage) => {
     if (!message?.data?.action) {
@@ -27,7 +27,7 @@ onmessage = async (message: WorkerMessage) => {
         const data = validateCommissionProps(
             message.data as WorkerMessage['data'] & { page: number },
             {
-                page: ['Number', 'undefined'],
+                page: 'Number?',
             }
         )
         if (!data) {

@@ -1,5 +1,5 @@
 /**
- * Epicurrents Markdown processer. This class contains the common methods used both by workerized and direct readers.
+ * Epicurrents Markdown processor. This class contains the common methods used both by workerized and direct readers.
  * @package    epicurrents/htm-reader
  * @copyright  2024 Sampsa Lohi
  * @license    Apache-2.0
@@ -19,7 +19,7 @@ const md = markdownit({
     xhtmlOut: true,
 })
 
-export default class MarkdownProcesser {
+export default class MarkdownProcessor {
     /** Parsed HTM content of the source files. */
     protected _htmContent = [] as { content: string, page: number }[]
     /** HTM content sources. */
