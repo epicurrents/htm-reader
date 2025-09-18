@@ -1,7 +1,7 @@
-import HtmReader from './HtmReader'
+import HtmImporter from './HtmImporter'
 import MarkdownWorkerSubstitute from '#markdown/MarkdownWorkerSubstitute'
 
 export {
-    HtmReader,
+    HtmImporter,
     MarkdownWorkerSubstitute,
 }

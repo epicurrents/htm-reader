@@ -5,7 +5,7 @@
  * @license    Apache-2.0
  */
 
-import { FileFormatReader } from '@epicurrents/core/dist/types'
+import { FileFormatImporter } from '@epicurrents/core/dist/types'
 
 export type ConfigReadFile = {
     format?: string
@@ -14,7 +14,7 @@ export type ConfigReadFile = {
     url?: string
 }
 
-export interface DocumentFileReader extends FileFormatReader {
+export interface DocumentFileImporter extends FileFormatImporter {
 
 }
 

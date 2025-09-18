@@ -1,26 +1,26 @@
 /**
- * Epicurrents HTM reader.
+ * Epicurrents HTM importer.
  * @package    epicurrents/htm-reader
  * @copyright  2024 Sampsa Lohi
  * @license    Apache-2.0
  */
 
-import { GenericFileReader } from '@epicurrents/core'
-import {
-    type AssociatedFileType,
-    type StudyContextFile,
-    type StudyFileContext,
+import { GenericStudyImporter } from '@epicurrents/core'
+import type {
+    AssociatedFileType,
+    StudyContextFile,
+    StudyFileContext,
 } from '@epicurrents/core/dist/types'
-import {
-    type ConfigReadFile,
-    type DocumentFileReader,
-    type HtmDocumentFormat,
+import type {
+    ConfigReadFile,
+    DocumentFileImporter,
+    HtmDocumentFormat,
 } from '#types'
 import Log from 'scoped-event-log'
 
-const SCOPE = 'HtmReader'
+const SCOPE = 'HtmImporter'
 
-export default class HtmReader extends GenericFileReader implements DocumentFileReader {
+export default class HtmImporter extends GenericStudyImporter implements DocumentFileImporter {
     protected _format: HtmDocumentFormat
 
     constructor (format: HtmDocumentFormat) {
@@ -57,7 +57,7 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
         }
     }
 
-    async readFile (source: File | StudyFileContext, config?: ConfigReadFile) {
+    async importFile (source: File | StudyFileContext, config?: ConfigReadFile) {
         const file = (source as StudyFileContext).file || source as File
         Log.debug(`Loading HTM from file ${file.webkitRelativePath}.`, SCOPE)
         const fileName = config?.name || file.name || ''
@@ -81,7 +81,7 @@ export default class HtmReader extends GenericFileReader implements DocumentFile
         return studyFile
     }
 
-    async readUrl (source: string | StudyFileContext, config?: ConfigReadFile) {
+    async importUrl (source: string | StudyFileContext, config?: ConfigReadFile) {
         const url = (source as StudyFileContext).url || source as string
         Log.debug(`Loading HTM from url ${url}.`, SCOPE)
         const fileName = config?.name || url.split('/').pop() || ''
