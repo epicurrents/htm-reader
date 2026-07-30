@@ -75,9 +75,18 @@ export default class MarkdownProcessor {
                 return ''
             }
         } else if (requestedPage.url) {
-            // Fetch the file contents.
-            const content = await fetch(requestedPage.url).then(r => r.text())
-            return md.render(content)
+            // Fetch the file contents. A transport failure or error body must resolve to empty
+            // content, not reject out of this getter (an unhandled rejection to the caller).
+            try {
+                const response = await fetch(requestedPage.url)
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`)
+                }
+                return md.render(await response.text())
+            } catch (e) {
+                Log.error(`Loading markdown from ${requestedPage.url} failed: ${(e as Error).message}.`, SCOPE)
+                return ''
+            }
         }
         Log.error(`The requested page had no file or url to load contents from.`, SCOPE)
         return ''
