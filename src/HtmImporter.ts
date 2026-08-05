@@ -59,7 +59,7 @@ export default class HtmImporter extends GenericStudyImporter implements Documen
 
     async importFile (source: File | StudyFileContext, config?: ConfigReadFile) {
         const file = (source as StudyFileContext).file || source as File
-        Log.debug(`Loading HTM from file ${file.webkitRelativePath}.`, SCOPE)
+        Log.debug(`Loading HTM from file ${file.webkitRelativePath || file.name}.`, SCOPE)
         const fileName = config?.name || file.name || ''
         const fileFormat = config?.format ? config.format
                             : fileName.endsWith('.htm') || fileName.endsWith('.html')
