@@ -10,7 +10,7 @@ import type {
     AssociatedFileType,
     StudyContextFile,
     StudyFileContext,
-} from '@epicurrents/core/dist/types'
+} from '@epicurrents/core/types'
 import type {
     ConfigReadFile,
     DocumentFileImporter,

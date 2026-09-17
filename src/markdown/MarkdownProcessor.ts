@@ -7,7 +7,7 @@
 
 import {
     type AppSettings,
-} from '@epicurrents/core/dist/types'
+} from '@epicurrents/core/types'
 import { type HtmSourceFileContext } from '#types'
 import markdownit from 'markdown-it'
 import { Log } from 'scoped-event-log'

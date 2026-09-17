@@ -7,8 +7,8 @@
  */
 
 import { SETTINGS } from '@epicurrents/core'
-import { type WorkerMessage } from '@epicurrents/core/dist/types'
-import { validateCommissionProps } from '@epicurrents/core/dist/util'
+import { type WorkerMessage } from '@epicurrents/core/types'
+import { validateCommissionProps } from '@epicurrents/core/util'
 import { type HtmSourceFileContext } from '#types'
 import MarkdownProcessor from '../markdown/MarkdownProcessor'
 import { Log } from 'scoped-event-log'

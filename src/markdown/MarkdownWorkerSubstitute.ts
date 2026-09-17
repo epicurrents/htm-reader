@@ -6,8 +6,8 @@
  */
 
 import { ServiceWorkerSubstitute } from '@epicurrents/core'
-import { validateCommissionProps } from '@epicurrents/core/dist/util'
-import type { WorkerMessage, WorkerSubstitute } from '@epicurrents/core/dist/types'
+import { validateCommissionProps } from '@epicurrents/core/util'
+import type { WorkerMessage, WorkerSubstitute } from '@epicurrents/core/types'
 import { type HtmSourceFileContext } from '#types'
 import MarkdownProcessor from './MarkdownProcessor'
 import { Log } from 'scoped-event-log'
