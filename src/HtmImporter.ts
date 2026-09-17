@@ -17,6 +17,7 @@ import type {
     HtmDocumentFormat,
 } from '#types'
 import Log from 'scoped-event-log'
+import InlineMarkdownWorker from './workers/markdown.worker.ts?worker&inline'
 
 const SCOPE = 'HtmImporter'
 
@@ -45,11 +46,7 @@ export default class HtmImporter extends GenericStudyImporter implements Documen
     getFileTypeWorker (): Worker | null {
         if (this._format === 'markdown') {
             const workerOverride = this._workerOverrides.get('markdown')
-            const worker = workerOverride ? workerOverride() : new Worker(
-                /* webpackChunkName: 'markdown.worker' */
-                new URL('./workers/markdown.worker', import.meta.url),
-                { type: 'module' }
-            )
+            const worker = workerOverride ? workerOverride() : new InlineMarkdownWorker()
             Log.registerWorker(worker)
             return worker
         } else {
