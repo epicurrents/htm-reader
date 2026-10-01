@@ -1,105 +1,13 @@
 /**
- * Epicurrents Markdown document worker. Due to risk of maliciously formatted markdown hanging up the main thread,
- * parsing is best performed in a worker.
+ * Epicurrents Markdown document worker.
  * @package    epicurrents/htm-reader
  * @copyright  2024 Sampsa Lohi
  * @license    Apache-2.0
  */
 
-import { SETTINGS } from '@epicurrents/core'
-import { type WorkerMessage } from '@epicurrents/core/types'
-import { validateCommissionProps } from '@epicurrents/core/util'
-import { type HtmSourceFileContext } from '#types'
-import MarkdownProcessor from '../markdown/MarkdownProcessor'
-import { Log } from 'scoped-event-log'
+import { documentWorkerHandler } from '#document/documentWorker'
+import MarkdownProcessor from '#markdown/MarkdownProcessor'
 
-const SCOPE = "markdown.worker"
+const SCOPE = 'markdown.worker'
 
-const LOADER = new MarkdownProcessor(SETTINGS)
-
-onmessage = async (message: WorkerMessage) => {
-    if (!message?.data?.action) {
-        return
-    }
-    const action = message.data.action
-    Log.debug(`Received message with action ${action}.`, SCOPE)
-    if (action === 'get-page-content') {
-        const data = validateCommissionProps(
-            message.data as WorkerMessage['data'] & { page: number },
-            {
-                page: 'Number?',
-            }
-        )
-        if (!data) {
-            Log.error(`Validating props for task '${action}' failed.`, SCOPE)
-            postMessage({
-                action,
-                success: false,
-                rn: message.data.rn,
-            })
-            return
-        }
-        try {
-            const content = await getPageContent(data.page)
-            postMessage({
-                action,
-                content,
-                success: true,
-                rn: message.data.rn,
-            })
-        } catch (e) {
-            Log.error(`An error occurred while trying to parse markdown.`, SCOPE, e as Error)
-        }
-    } else if (action === 'set-sources') {
-        const data = validateCommissionProps(
-            message.data as WorkerMessage['data'] & { sources: HtmSourceFileContext | HtmSourceFileContext[] },
-            {
-                sources: 'Array',
-            }
-        )
-        if (!data) {
-            Log.error(`Validating props for task '${action}' failed.`, SCOPE)
-            postMessage({
-                action,
-                success: false,
-                rn: message.data.rn,
-            })
-            return
-        }
-        try {
-            setSources(data.sources)
-            postMessage({
-                action,
-                numPages: Array.isArray(data.sources) ? data.sources.length : 1,
-                success: true,
-                rn: message.data.rn,
-            })
-        } catch (e) {
-            Log.error(`An error occurred while trying to set sources.`, SCOPE, e as Error)
-            postMessage({
-                action,
-                success: false,
-                rn: message.data.rn,
-            })
-        }
-    } else if (action === 'update-settings') {
-        Object.assign(SETTINGS, message.data.settings)
-    }
-}
-
-//const updateCallback = (update: { [prop: string]: unknown }) => {
-//}
-//LOADER.setUpdateCallback(updateCallback)
-
-/**
- * Get the HTML content of a page.
- * @param page - Page number to get - optional.
- * @returns Parsed page content in HTML.
- */
-const getPageContent = (page?: number) => {
-    return LOADER.getPageContent(page)
-}
-
-const setSources = (sources: HtmSourceFileContext | HtmSourceFileContext[]) => {
-    LOADER.setSources(sources)
-}
+onmessage = documentWorkerHandler(new MarkdownProcessor(), SCOPE)

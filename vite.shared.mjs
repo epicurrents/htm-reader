@@ -27,7 +27,7 @@ export const abs = (p) => fileURLToPath(new URL(p, import.meta.url))
  */
 export const ALIASES = [
     { find: /^#root\//, replacement: abs('./') + '/' },
-    { find: /^#(markdown|types|util|workers)\b/, replacement: abs('./src') + '/$1' },
+    { find: /^#(document|html|markdown|types|util|workers)\b/, replacement: abs('./src') + '/$1' },
 ]
 
 /**
