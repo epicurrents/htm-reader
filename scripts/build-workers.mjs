@@ -14,7 +14,7 @@
 import { build } from 'vite'
 import { ALIASES, abs, minifyWorkerOutput } from '../vite.shared.mjs'
 
-const WORKERS = ['markdown']
+const WORKERS = ['html', 'markdown']
 
 for (const name of WORKERS) {
     await build({
