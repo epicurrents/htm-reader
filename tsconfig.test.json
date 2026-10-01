@@ -1,0 +1,14 @@
+{
+    // The suite is type-checked as a step of `npm test`, ahead of the unit run. Tests here construct
+    // real core classes rather than doubles, so this is what catches a test asserting on a member no
+    // shipped class has; there is no mock directory to include, because the suite uses none.
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": true,
+        "rootDir": ".",
+        "types": ["node"],
+        "typeRoots": ["../../node_modules/@types", "./node_modules/@types"]
+    },
+    "include": ["./tests/**/*", "./src/**/*"],
+    "exclude": ["node_modules", "dist"]
+}
